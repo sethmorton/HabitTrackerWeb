@@ -3,36 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>App Invite</title>
+    <title>Habit Tribe Invite</title>
 </head>
 <body>
-    <h1>Join our Habit Tracking App!</h1>
-    <p>Redirecting you to the app...</p>
+    <h1>Join Habit Tribe!</h1>
+    <p>Click the button below to open the app or download it from the store:</p>
+    <button id="openApp">Open App / Download</button>
 
     <script>
         const urlParams = new URLSearchParams(window.location.search);
         const userId = urlParams.get('userId');
         
-        // Replace these with your actual app details
+        // Updated universal link
+        const universalLink = `https://incomparable-mochi-b7ff95.netlify.app/invite?userId=${userId}`;
+
+        // Replace these with your actual app details when you have them
         const iosAppStoreId = 'your-ios-app-store-id';
-        const androidPackageName = 'com.yourapp.android';
-        const universalLink = `yourapp://invite?userId=${userId}`;
+        const androidPackageName = 'com.sethmorton.habittribe';
 
-        function redirect() {
-            if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-                window.location.href = `https://itunes.apple.com/app/${iosAppStoreId}`;
-            } else if (/Android/i.test(navigator.userAgent)) {
-                window.location.href = `https://play.google.com/store/apps/details?id=${androidPackageName}`;
-            } else {
-                document.body.innerHTML += '<p>Please open this link on a mobile device.</p>';
-            }
-        }
-
-        // Try to open the app first
-        window.location.href = universalLink;
-
-        // If the app doesn't open after a short delay, redirect to the app store
-        setTimeout(redirect, 1000);
+        document.getElementById('openApp').addEventListener('click', function() {
+            window.location.href = universalLink;
+            setTimeout(function() {
+                if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+                    window.location.href = `https://itunes.apple.com/app/${iosAppStoreId}`;
+                } else if (/Android/i.test(navigator.userAgent)) {
+                    window.location.href = `https://play.google.com/store/apps/details?id=${androidPackageName}`;
+                } else {
+                    alert('Please open this link on a mobile device.');
+                }
+            }, 1000);
+        });
     </script>
 </body>
 </html>
