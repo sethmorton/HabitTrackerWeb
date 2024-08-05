@@ -15,22 +15,13 @@
         const userId = urlParams.get('userId');
         
         // Updated universal link
-        const universalLink = `https://incomparable-mochi-b7ff95.netlify.app/invite?userId=${userId}`;
-
-        // Replace these with your actual app details when you have them
-        const iosAppStoreId = 'your-ios-app-store-id';
-        const androidPackageName = 'com.sethmorton.habittribe';
+        const universalLink = `habittribe://invite?userId=${userId}`;
 
         document.getElementById('openApp').addEventListener('click', function() {
             window.location.href = universalLink;
             setTimeout(function() {
-                if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-                    window.location.href = `https://itunes.apple.com/app/${iosAppStoreId}`;
-                } else if (/Android/i.test(navigator.userAgent)) {
-                    window.location.href = `https://play.google.com/store/apps/details?id=${androidPackageName}`;
-                } else {
-                    alert('Please open this link on a mobile device.');
-                }
+                // Fallback for when the app is not installed
+                window.location.href = 'https://incomparable-mochi-b7ff95.netlify.app';
             }, 1000);
         });
     </script>
