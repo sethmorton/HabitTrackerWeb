@@ -7,38 +7,27 @@
     <script>
         function redirect() {
             var urlParams = new URLSearchParams(window.location.search);
-            var deepLink = urlParams.get('deepLink');
+            var videoId = urlParams.get('id');
             var appStoreUrl = 'https://apps.apple.com/app/your-app-id'; // Replace with your actual iOS App Store URL
             var playStoreUrl = 'https://play.google.com/store/apps/details?id=your.app.package'; // Replace with your actual Android Play Store URL
 
-            if (deepLink) {
-                // Decode the deepLink parameter
-                var decodedDeepLink = decodeURIComponent(deepLink);
-                
-                // Extract the video ID from the decoded deep link
-                var videoIdMatch = decodedDeepLink.match(/\/video\/([^/]+)/);
-                if (videoIdMatch && videoIdMatch[1]) {
-                    var videoId = videoIdMatch[1];
-                    
-                    // Construct the correct deep link
-                    var correctDeepLink = 'com.renavest.renavestapp://video/' + videoId;
+            if (videoId) {
+                // Construct the correct deep link
+                var deepLink = 'com.renavest.renavestapp://learn?id=' + videoId;
 
-                    // Attempt to open the app with the correct deep link
-                    window.location.href = correctDeepLink;
+                // Attempt to open the app with the deep link
+                window.location.href = deepLink;
 
-                    // If the app doesn't open within 2 seconds, redirect to the app store
-                    setTimeout(function() {
-                        if (/android/i.test(navigator.userAgent)) {
-                            window.location.href = playStoreUrl;
-                        } else if (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream) {
-                            window.location.href = appStoreUrl;
-                        }
-                    }, 2000);
-                } else {
-                    document.getElementById('message').textContent = 'Invalid video link. Please try again.';
-                }
+                // If the app doesn't open within 2 seconds, redirect to the app store
+                setTimeout(function() {
+                    if (/android/i.test(navigator.userAgent)) {
+                        window.location.href = playStoreUrl;
+                    } else if (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream) {
+                        window.location.href = appStoreUrl;
+                    }
+                }, 2000);
             } else {
-                // Handle the case where deepLink is not provided
+                // Handle the case where videoId is not provided
                 document.getElementById('message').textContent = 'Invalid link. Please try again.';
             }
         }
