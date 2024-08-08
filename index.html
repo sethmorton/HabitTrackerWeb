@@ -8,26 +8,43 @@
         function redirect() {
             var urlParams = new URLSearchParams(window.location.search);
             var deepLink = urlParams.get('deepLink');
-            var appStoreUrl = 'https://apps.apple.com/app/your-app-id'; // iOS App Store URL
-            var playStoreUrl = 'https://play.google.com/store/apps/details?id=your.app.package'; // Android Play Store URL
+            var appStoreUrl = 'https://apps.apple.com/app/your-app-id'; // Replace with your actual iOS App Store URL
+            var playStoreUrl = 'https://play.google.com/store/apps/details?id=your.app.package'; // Replace with your actual Android Play Store URL
 
             if (deepLink) {
-                // Attempt to open the app
-                window.location.href = deepLink;
+                // Decode the deepLink parameter
+                var decodedDeepLink = decodeURIComponent(deepLink);
+                
+                // Extract the video ID from the decoded deep link
+                var videoIdMatch = decodedDeepLink.match(/\/video\/([^/]+)/);
+                if (videoIdMatch && videoIdMatch[1]) {
+                    var videoId = videoIdMatch[1];
+                    
+                    // Construct the correct deep link
+                    var correctDeepLink = 'com.renavest.renavestapp://video/' + videoId;
 
-                // If the app doesn't open within 2 seconds, redirect to the app store
-                setTimeout(function() {
-                    if (/android/i.test(navigator.userAgent)) {
-                        window.location.href = playStoreUrl;
-                    } else if (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream) {
-                        window.location.href = appStoreUrl;
-                    }
-                }, 2000);
+                    // Attempt to open the app with the correct deep link
+                    window.location.href = correctDeepLink;
+
+                    // If the app doesn't open within 2 seconds, redirect to the app store
+                    setTimeout(function() {
+                        if (/android/i.test(navigator.userAgent)) {
+                            window.location.href = playStoreUrl;
+                        } else if (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream) {
+                            window.location.href = appStoreUrl;
+                        }
+                    }, 2000);
+                } else {
+                    document.getElementById('message').textContent = 'Invalid video link. Please try again.';
+                }
+            } else {
+                // Handle the case where deepLink is not provided
+                document.getElementById('message').textContent = 'Invalid link. Please try again.';
             }
         }
     </script>
 </head>
 <body onload="redirect()">
-    <p>Redirecting to the app...</p>
+    <p id="message">Redirecting to the app...</p>
 </body>
 </html>
