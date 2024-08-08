@@ -1,0 +1,13 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appID": "ZM9QAKM5PZ.com.renavest.renavestapp",
+        "paths": [
+          "/video/*"
+        ]
+      }
+    ]
+  }
+}
